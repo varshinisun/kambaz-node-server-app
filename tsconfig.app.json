@@ -20,7 +20,14 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Important for using .js files */
+    "allowJs": true
   },
-  "include": ["src", "Lab5/index.js", "Lab5/PathParameters.js"]
+  "include": [
+    "src/**/*",
+    "Lab5/index.js",
+    "Lab5/PathParameters.js"
+  ]
 }
