@@ -4,9 +4,29 @@ import * as enrollmentsDao from "../Enrollments/dao.js";
 
 export default function UserRoutes(app) {
 
-  const deleteUser = async (req, res) => {
-    const status = await dao.deleteUser(req.params.userId);
-    res.json(status);
+  const findCoursesForUser = async (req, res) => {
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+      res.sendStatus(401);
+      return;
+    }
+    if (currentUser.role === "ADMIN") {
+      const courses = await courseDao.findAllCourses();
+      res.json(courses);
+      return;
+    }
+    let { uid } = req.params;
+    if (uid === "current") {
+      uid = currentUser._id;
+    }
+    const courses = await enrollmentsDao.findCoursesForUser(uid);
+    res.json(courses);
+  };
+  app.get("/api/users/:uid/courses", findCoursesForUser);
+
+const deleteUser = async (req, res) => {
+  const status = await dao.deleteUser(req.params.userId);
+  res.json(status);
 };
 
 app.delete("/api/users/:userId", deleteUser);  
